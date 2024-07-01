@@ -1,6 +1,6 @@
 # Chrome AI Game
 
-A physics-based word combination game leveraging Chrome's AI capabilities.
+A physics-based word combination game leveraging Chrome's local AI model capabilities.
 
 ## Description
 
