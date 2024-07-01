@@ -1,6 +1,8 @@
 # Chrome AI Game
 
-A physics-based word combination game leveraging Chrome's local AI model capabilities.
+A physics-based word combination game leveraging Chrome's local AI model capabilities. [Try it here](https://blixt.xyz/chrome-ai-game/) (requires Chrome from Canary/Development channel).
+
+![chrome-ai-game](https://github.com/blixt/chrome-ai-game/assets/158591/ff03f6c9-0db6-4d76-986e-b5803595963e)
 
 ## Description
 
