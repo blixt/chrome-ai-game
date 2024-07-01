@@ -52,18 +52,29 @@ export function Game() {
                 <Box maxWidth="400px">
                     <Card>
                         <Flex direction="column" gap="2">
-                            <Text size="3">
-                                {canPlay === "needs-setup"
-                                    ? "Your browser has support for AI features but they are not enabled yet. You need to follow a guide to set up AI support in your browser."
-                                    : "Sorry, you can't play the game with this browser, because it does not support AI functionality."}
-                            </Text>
-                            {canPlay === "needs-setup" && (
-                                <Link
-                                    href="https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/view#heading=h.pghp86scw27"
-                                    target="_blank"
-                                >
-                                    Click here for setup instructions.
-                                </Link>
+                            {canPlay === "needs-setup" ? (
+                                <>
+                                    <Text size="3">
+                                        Your browser has support for AI features but they are not enabled yet. You need
+                                        to follow a guide to set up AI support in your browser.
+                                    </Text>
+                                    <Link
+                                        href="https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/view#heading=h.pghp86scw27"
+                                        target="_blank"
+                                    >
+                                        Click here for setup instructions.
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    <Text size="3">
+                                        Sorry, you can't play the game with this browser, because it does not support AI
+                                        functionality.
+                                    </Text>
+                                    <Link href="https://www.chromium.org/getting-involved/dev-channel/" target="_blank">
+                                        Get Chrome Dev (or Canary)
+                                    </Link>
+                                </>
                             )}
                         </Flex>
                     </Card>
