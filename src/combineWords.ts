@@ -178,18 +178,7 @@ const reParseAssistantResponse = /^[^=]+=[^\p{L}\p{N}]*([\p{L}\p{N} ]*)[^(\n]*\(
 // Keeping ZWJ and VS16 characters to support combination emoji.
 const reAllNonEmoji = /[^\p{Emoji}\p{Emoji_Presentation}\uFE0F\u200D]+/gv
 
-// This config will allow some randomness in the responses, meaning the
-// same combination of words could sometimes change. You could set
-// temperature to 0 to avoid this, but I think it's more fun this way.
-const baseAssistant = await window.ai.assistant.create({
-    initialPrompts: [
-        {
-            role: "system",
-            content: SYSTEM_PROMPT,
-        },
-        ...createExamplePrompts(),
-    ],
-})
+let baseAssistant: AIAssistant | undefined
 
 export async function combineWords(a: string, b: string): Promise<string | undefined> {
     const start = performance.now()
@@ -201,6 +190,24 @@ export async function combineWords(a: string, b: string): Promise<string | undef
 
     const abortController = new AbortController()
     const signal = AbortSignal.any([abortController.signal, AbortSignal.timeout(10_000)])
+
+    if (!baseAssistant) {
+        // This config will allow some randomness in the responses, meaning the
+        // same combination of words could sometimes change. You could set
+        // temperature to 0 to avoid this, but I think it's more fun this way.
+        baseAssistant = await window.ai.assistant.create({
+            initialPrompts: [
+                {
+                    role: "system",
+                    content: SYSTEM_PROMPT,
+                },
+                ...createExamplePrompts(),
+            ],
+        })
+    }
+
+    // Clone the base assistant to make sure we always have the same message
+    // history, which leverages the token cache in the browser.
     const assistant = await baseAssistant.clone({ signal })
 
     let prompt = serializeUserPrompt(a, b)
