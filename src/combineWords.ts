@@ -167,7 +167,7 @@ function serializeAssistantResponse(a: string, b: string, equals: string, emoji?
     return `${clean(a)} + ${clean(b)} = ${cleaned} (${emojiForWord(cleaned, emoji)})! Ready for next word pair.`
 }
 
-function createExamplePrompts(): (AIAssistantUserPrompt | AIAssistantAssistantPrompt)[] {
+function createExamplePrompts(): (AILanguageModelUserPrompt | AILanguageModelAssistantPrompt)[] {
     return shuffled(examples).flatMap(({ a, b, equals }) => [
         { role: "user", content: serializeUserPrompt(a, b) },
         { role: "assistant", content: serializeAssistantResponse(a, b, equals) },
@@ -178,11 +178,11 @@ const reParseAssistantResponse = /^[^=]+=[^\p{L}\p{N}]*([\p{L}\p{N} ]*)[^(\n]*\(
 // Keeping ZWJ and VS16 characters to support combination emoji.
 const reAllNonEmoji = /[^\p{Emoji}\p{Emoji_Presentation}\uFE0F\u200D]+/gv
 
-let baseAssistant: AIAssistant | undefined
+let baseAssistant: AILanguageModel | undefined
 
 export async function combineWords(a: string, b: string): Promise<string | undefined> {
     const start = performance.now()
-    const capabilities = await window.ai.assistant.capabilities()
+    const capabilities = await window.ai.languageModel.capabilities()
 
     if (capabilities.available === "no") {
         throw new Error("No AI model available")
@@ -195,7 +195,7 @@ export async function combineWords(a: string, b: string): Promise<string | undef
         // This config will allow some randomness in the responses, meaning the
         // same combination of words could sometimes change. You could set
         // temperature to 0 to avoid this, but I think it's more fun this way.
-        baseAssistant = await window.ai.assistant.create({
+        baseAssistant = await window.ai.languageModel.create({
             initialPrompts: [
                 {
                     role: "system",
@@ -293,11 +293,11 @@ export function emojiForWord(word: string, addIfMissing?: string): string {
 }
 
 export async function canCombineWords(): Promise<"yes" | "needs-setup" | "no"> {
-    if (!("ai" in window) || !window.ai.assistant) {
+    if (!("ai" in window) || !window.ai.languageModel) {
         console.warn("Unsupported window.ai value:", window.ai)
         return "no"
     }
-    const capabilities = await window.ai.assistant.capabilities()
+    const capabilities = await window.ai.languageModel.capabilities()
     if (capabilities.available === "readily") {
         return "yes"
     }

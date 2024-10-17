@@ -1,4 +1,4 @@
-import { b2BodyType, b2PolygonShape, b2TestOverlap, b2Vec2, b2WeldJointDef, b2World, type b2Body } from "@box2d/core"
+import { type b2Body, b2BodyType, b2PolygonShape, b2TestOverlap, b2Vec2, b2WeldJointDef, b2World } from "@box2d/core"
 
 // Scaling factor between Box2D units (meters) and SVG rendering space (pixels)
 const SCALE = 40 // 40 pixels = 1 meter
