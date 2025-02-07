@@ -167,7 +167,7 @@ function serializeAssistantResponse(a: string, b: string, equals: string, emoji?
     return `${clean(a)} + ${clean(b)} = ${cleaned} (${emojiForWord(cleaned, emoji)})! Ready for next word pair.`
 }
 
-function createExamplePrompts(): (AILanguageModelUserPrompt | AILanguageModelAssistantPrompt)[] {
+function createExamplePrompts(): AILanguageModelPrompt[] {
     return shuffled(examples).flatMap(({ a, b, equals }) => [
         { role: "user", content: serializeUserPrompt(a, b) },
         { role: "assistant", content: serializeAssistantResponse(a, b, equals) },
@@ -235,7 +235,6 @@ export async function combineWords(a: string, b: string): Promise<string | undef
             }
             if (match[2]) {
                 emoji = cleanEmoji(match[2])
-                streamAbortController.abort()
                 break
             }
         }
