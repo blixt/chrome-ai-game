@@ -250,15 +250,15 @@ export class World {
         if (event.button !== 0) return // Only handle left mouse button or touch
         if (this.grabbedWordId === null) return
 
-        const grabbed = this.words.find(w => w.id === this.grabbedWordId)
-        if (!grabbed) return
-
         const originalGrabbedId = this.grabbedWordId
         const originalHoveredId = this.hoveredWordId
 
         // Reset grabbed and hovered states immediately.
         this.grabbedWordId = null
         this.hoveredWordId = null
+
+        const grabbed = this.words.find(w => w.id === originalGrabbedId)
+        if (!grabbed) return
 
         if (originalHoveredId !== null && this.onCombineWords) {
             const hovered = this.words.find(w => w.id === originalHoveredId)
